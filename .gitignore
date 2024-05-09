@@ -1,11 +1,19 @@
+# Ignore commonly ignored files/directories
 node_modules
 HELP.md
 target/
+
+# Ensure Maven wrapper jar is not ignored
 !.mvn/wrapper/maven-wrapper.jar
+
+# Ensure target directories in source and test directories are not ignored
 !**/src/main/**/target/
 !**/src/test/**/target/
-src/main/resources/
-### STS ###
+
+# Ignore src/main/resources directory
+
+
+# STS (Spring Tool Suite)
 .apt_generated
 .classpath
 .factorypath
@@ -14,13 +22,13 @@ src/main/resources/
 .springBeans
 .sts4-cache
 
-### IntelliJ IDEA ###
+# IntelliJ IDEA
 .idea
 *.iws
 *.iml
 *.ipr
 
-### NetBeans ###
+# NetBeans
 /nbproject/private/
 /nbbuild/
 /dist/
@@ -30,5 +38,5 @@ build/
 !**/src/main/**/build/
 !**/src/test/**/build/
 
-### VS Code ###
+# Visual Studio Code
 .vscode/
