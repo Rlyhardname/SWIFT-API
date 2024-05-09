@@ -11,7 +11,7 @@ target/
 !**/src/test/**/target/
 
 # Ignore src/main/resources directory
-
+src/main/resources
 
 # STS (Spring Tool Suite)
 .apt_generated
