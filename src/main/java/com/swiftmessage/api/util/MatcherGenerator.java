@@ -10,10 +10,7 @@ import static com.swiftmessage.api.io.exceptions.messages.ParserExceptions.EMPTY
 
 public class MatcherGenerator {
     /**
-     * @param lines
-     * @param pattern
      * @return Instance of Matcher class or null if pattern is corrupted.
-     * @throws EmptyMessageException
      */
     public static Matcher generate(String[] lines, String pattern) throws EmptyMessageException, NullPointerException {
         return getMatcher(lines,pattern);

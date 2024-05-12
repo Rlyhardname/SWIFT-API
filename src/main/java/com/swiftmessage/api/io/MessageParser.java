@@ -15,7 +15,7 @@ import static com.swiftmessage.api.io.exceptions.messages.ParserExceptions.MESSA
 
 public class MessageParser implements Parser {
     public static String SWIFT_PATTERN_799 = "(\\{[0-9]:[\\d\\w\\s {:.,-]*\\})(\\{[\\w]*:[\\d]*\\})*";
-    private MessageDetails details;
+    private final MessageDetails details;
 
     public MessageParser(MessageDetails details) {
         this.details = details;
@@ -71,11 +71,7 @@ public class MessageParser implements Parser {
     }
 
     private boolean isMessageStateValid() {
-        if (details.getArrayOfLines()[details.getMessageState().getState()] != null) {
-            return true;
-        }
-
-        return false;
+        return details.getArrayOfLines()[details.getMessageState().getState()] != null;
     }
 
     private void initializeMessageArrayCell() {
@@ -104,8 +100,7 @@ public class MessageParser implements Parser {
 
     private Swift7xx buildSwiftMessage() {
         ReferenceAndMac compositeKey = details.getCompositeKeyBuilder().build();
-        Swift7xx swiftMessage = SwiftMessageFactory.instanceOf(compositeKey, details.getArrayOfLines());
-        return swiftMessage;
+        return SwiftMessageFactory.instanceOf(compositeKey, details.getArrayOfLines());
     }
 
 }

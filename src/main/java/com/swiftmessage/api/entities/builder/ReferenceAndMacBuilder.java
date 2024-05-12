@@ -14,22 +14,19 @@ public class ReferenceAndMacBuilder {
         this.referenceAndMac = referenceAndMac;
     }
 
-    public ReferenceAndMacBuilder addSenderReference(String reference) {
+    public void addSenderReference(String reference) {
         referenceAndMac.setSenderReference(reference);
-        return this;
     }
 
-    public ReferenceAndMacBuilder addTransactionReference(String reference) {
+    public void addTransactionReference(String reference) {
         referenceAndMac.setTransactionReference(reference);
-        return this;
     }
 
-    public ReferenceAndMacBuilder addMacReference(String reference) {
+    public void addMacReference(String reference) {
         referenceAndMac.setMAC(reference);
-        return this;
     }
 
-    public ReferenceAndMac build() {
+    public ReferenceAndMac build() throws InvalidMessageIdentificationException{
         if (isValid()) {
             return referenceAndMac;
         }
