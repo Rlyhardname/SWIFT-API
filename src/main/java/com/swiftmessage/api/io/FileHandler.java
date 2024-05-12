@@ -1,8 +1,12 @@
 package com.swiftmessage.api.io;
 
 import com.swiftmessage.api.entities.models.Swift7xx;
+import com.swiftmessage.api.exceptions.MessageIdentifierDuplicationException;
+import com.swiftmessage.api.io.exceptions.EmptyMessageException;
 import com.swiftmessage.api.io.exceptions.MissingFileException;
 import org.springframework.web.multipart.MultipartFile;
+
+import java.util.regex.PatternSyntaxException;
 
 import static com.swiftmessage.api.io.exceptions.messages.FileExceptions.MISSING_FILE;
 
@@ -19,8 +23,21 @@ public class FileHandler<T extends MultipartFile> extends Handler<T> {
 
     @Override
     public Swift7xx readAndParseToSwiftMessage(T input) {
-        String[] lines = getFileLines(input);
-        return parseToSwift(lines);
+        try {
+            String[] lines = getFileLines(input);
+            parseToSwift(lines);
+        } catch (EmptyMessageException e) {
+            //log(e);
+            //redirect???
+        } catch (MessageIdentifierDuplicationException e) {
+            // log(e) -corrupted
+            // log something is wrong with the message and maybe save in corrupted messages table?
+        } catch (NullPointerException e) {
+            //log(e);
+            //redirect???
+        }
+
+        return null;
     }
 
     private String[] getFileLines(T input) {

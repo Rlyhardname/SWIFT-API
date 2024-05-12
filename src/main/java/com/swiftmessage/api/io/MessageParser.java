@@ -5,20 +5,17 @@ import com.swiftmessage.api.entities.models.ReferenceAndMac;
 import com.swiftmessage.api.entities.models.Swift7xx;
 import com.swiftmessage.api.exceptions.InvalidMessageIdentificationException;
 import com.swiftmessage.api.exceptions.MessageIdentifierDuplicationException;
-import com.swiftmessage.api.io.exceptions.EmptyMessageException;
 import com.swiftmessage.api.io.exceptions.MessageParserException;
 import com.swiftmessage.api.state.MessageState;
+import com.swiftmessage.api.util.MatcherGenerator;
 
 import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-import java.util.regex.PatternSyntaxException;
 
-import static com.swiftmessage.api.io.exceptions.messages.ParserExceptions.*;
+import static com.swiftmessage.api.io.exceptions.messages.ParserExceptions.MESSAGE_BUILD_ERROR;
 
 public class MessageParser implements Parser {
+    public static String SWIFT_PATTERN_799 = "(\\{[0-9]:[\\d\\w\\s {:.,-]*\\})(\\{[\\w]*:[\\d]*\\})*";
     private MessageDetails details;
-    String SWIFT_PATTERN_7xx = "\\{?([\\d\\w]+?:?[\\w\\d-:,.  ]+)\\}?";
-    String SWIFT_PATTERN_799 = "(\\{[0-9]:[\\d\\w\\s {:.,-]*\\})(\\{[\\w]*:[\\d]*\\})*";
 
     public MessageParser(MessageDetails details) {
         this.details = details;
@@ -26,53 +23,9 @@ public class MessageParser implements Parser {
 
     @Override
     public Swift7xx parse(String[] lines) {
-        Matcher matcher = getMatcher(lines);
+        Matcher matcher = MatcherGenerator.generate(lines,SWIFT_PATTERN_799);
         runMatcher(matcher);
         return tryBuildSwiftMessage();
-    }
-
-    private Matcher getMatcher(String[] lines) {
-        String message = constructMessage(lines);
-        Pattern pattern = constructPattern();
-        return constructMatcher(pattern, message);
-    }
-
-    private String constructMessage(String[] lines) {
-        return appendMessage(lines);
-    }
-
-    private String appendMessage(String[] lines) {
-        if (lines != null) {
-            if (isAtLeastOneLine(lines)) {
-                return String.join("", lines);
-            }
-
-            throw new EmptyMessageException(EMPTY_MESSAGE);
-        }
-
-        throw new NullPointerException();
-    }
-
-    private boolean isAtLeastOneLine(String[] lines) {
-        for (String line : lines) {
-            if (!line.isEmpty()) {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    private Pattern constructPattern() {
-        try {
-            return Pattern.compile(SWIFT_PATTERN_799);
-        } catch (PatternSyntaxException e) {
-            throw new MessageParserException(INVALID_REGEX);
-        }
-
-    }
-
-    private Matcher constructMatcher(Pattern pattern, String message) {
-        return pattern.matcher(message);
     }
 
     private void runMatcher(Matcher matcher) {
@@ -80,12 +33,7 @@ public class MessageParser implements Parser {
             var line = matcher.group(1);
             addDetails(line);
             appendMessage();
-            try {
-                includeToCompositeKeyBuilder(matcher, line);
-            } catch (MessageIdentifierDuplicationException e) {
-                // log something is wrong with the message and maybe save in corrupted messages table?
-            }
-
+            includeToCompositeKeyBuilder(matcher, line);
             if (MessageState.isState(line)) {
                 details.getMessageState().changeState(line);
             }
@@ -100,7 +48,7 @@ public class MessageParser implements Parser {
         }
     }
 
-    private void addDetails(String line){
+    private void addDetails(String line) {
         details.getStackOfLines().push(line);
     }
 
@@ -138,7 +86,7 @@ public class MessageParser implements Parser {
         details.getArrayOfLines()[details.getMessageState().getState()] += details.getSb().toString();
     }
 
-    private void cleanOldDetails(){
+    private void cleanOldDetails() {
         details.setSb(new StringBuilder());
     }
 

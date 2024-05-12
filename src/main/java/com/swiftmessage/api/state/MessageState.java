@@ -1,6 +1,9 @@
 package com.swiftmessage.api.state;
 
 import com.swiftmessage.api.entities.builder.ReferenceAndMacBuilder;
+import com.swiftmessage.api.exceptions.MessageIdentifierDuplicationException;
+
+import java.util.Objects;
 
 public class MessageState {
     public static final String ONE = "{1:";
@@ -46,16 +49,30 @@ public class MessageState {
         return false;
     }
 
-    public static void buildReferenceState(ReferenceAndMacBuilder builder, String... line) {
+    public static void buildReferenceState(ReferenceAndMacBuilder builder, String... line) throws MessageIdentifierDuplicationException {
         if (line[0].startsWith(SENDER_REFERENCE_STATE)) {
+            String senderReference = line[0];
+            if(Objects.nonNull(builder.getCompositeKey().getSenderReference())){
+                throw new MessageIdentifierDuplicationException(String.format(SENDER_REFERENCE_STATE,senderReference));
+            }
+
             builder.addSenderReference(line[0]);
         }
         if (line[0].startsWith(TRANSACTION_REFERENCE_STATE)) {
+            String transactionReference = line[0];
+            if(Objects.nonNull(builder.getCompositeKey().getSenderReference())){
+                throw new MessageIdentifierDuplicationException(String.format(SENDER_REFERENCE_STATE,transactionReference));
+            }
+
             builder.addTransactionReference(line[0]);
         }
-        if (line[1].startsWith(FIVE+MAC_REFERENCE_STATE)) {
-            String appendLines = line[0] + line[1];
-            builder.addMacReference(appendLines);
+        if (line[0].startsWith(FIVE+MAC_REFERENCE_STATE)) {
+            String mac = line[0].substring(4);
+            if(Objects.nonNull(builder.getCompositeKey().getSenderReference())){
+                throw new MessageIdentifierDuplicationException(String.format(SENDER_REFERENCE_STATE,mac));
+            }
+
+            builder.addMacReference(mac);
         }
 
     }

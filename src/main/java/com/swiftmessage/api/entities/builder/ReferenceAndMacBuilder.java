@@ -15,26 +15,16 @@ public class ReferenceAndMacBuilder {
     }
 
     public ReferenceAndMacBuilder addSenderReference(String reference) {
-        if (referenceAndMac.getSenderReference() != null) {
-            throw new MessageIdentifierDuplicationException(ExceptionMessage.SENDER_REFERENCE_DUPLICATION);
-        }
         referenceAndMac.setSenderReference(reference);
         return this;
     }
 
     public ReferenceAndMacBuilder addTransactionReference(String reference) {
-        if (referenceAndMac.getTransactionReference() != null) {
-            throw new MessageIdentifierDuplicationException(ExceptionMessage.TRANSACTION_REFERENCE_DUPLICATION);
-        }
         referenceAndMac.setTransactionReference(reference);
         return this;
     }
 
     public ReferenceAndMacBuilder addMacReference(String reference) {
-        if (referenceAndMac.getMAC() != null) {
-            throw new MessageIdentifierDuplicationException(ExceptionMessage.MAC_REFERENCE_DUPLICATION);
-        }
-
         referenceAndMac.setMAC(reference);
         return this;
     }
@@ -59,5 +49,9 @@ public class ReferenceAndMacBuilder {
         }
 
         return true;
+    }
+
+    public ReferenceAndMac getCompositeKey() {
+        return referenceAndMac;
     }
 }

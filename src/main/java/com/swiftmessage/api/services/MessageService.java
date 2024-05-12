@@ -29,7 +29,9 @@ public class MessageService {
     public void saveMessage(MultipartFile input) {
         Handler<MultipartFile> handler = FileHandler.instanceOf(input);
         Swift7xx message = (Swift7xx) handler.readAndParseToSwiftMessage(input);
-        swift7xxRepository.save(message);
+        if (message != null) {
+            swift7xxRepository.save(message);
+        }
     }
 
     public Swift7xxDto loadRecord(String senderReference, String transactionReference) {
