@@ -12,28 +12,29 @@ public class MatcherGenerator {
     /**
      * @return Instance of Matcher class or null if pattern is corrupted.
      */
-    public static Matcher generate(String[] lines, String pattern) throws EmptyMessageException, NullPointerException {
-        return getMatcher(lines,pattern);
-    }
-
-    private static Matcher getMatcher(String[] lines, String patternArg) {
+    public static Matcher generate(String[] lines, String pattern) throws NullPointerException {
         try {
-            String message = constructMessage(lines);
-            Pattern pattern = constructPattern(patternArg);
-            return constructMatcher(pattern, message);
+            return getMatcher(lines, pattern);
         } catch (PatternSyntaxException e) {
             //log(e);
             //alert system that pattern is corrupted and exit endpoint/use global exception handling for that maybe?
+            // TODO change to global exception later
+            throw new RuntimeException(e);
         }
 
-        return null;
+    }
+
+    private static Matcher getMatcher(String[] lines, String patternArg) {
+        String message = constructMessage(lines);
+        Pattern pattern = constructPattern(patternArg);
+        return constructMatcher(pattern, message);
     }
 
     private static String constructMessage(String[] lines) {
         return appendMessage(lines);
     }
 
-    private static String appendMessage(String[] lines) {
+    protected static String appendMessage(String[] lines) {
         if (lines != null) {
             if (isAtLeastOneLine(lines)) {
                 return String.join("", lines);
@@ -45,7 +46,7 @@ public class MatcherGenerator {
         throw new NullPointerException();
     }
 
-    private static boolean isAtLeastOneLine(String[] lines) {
+    protected static boolean isAtLeastOneLine(String[] lines) {
         for (String line : lines) {
             if (!line.isEmpty()) {
                 return true;
@@ -54,7 +55,7 @@ public class MatcherGenerator {
         return false;
     }
 
-    private static Pattern constructPattern(String pattern) {
+    protected static Pattern constructPattern(String pattern) {
         return Pattern.compile(pattern);
     }
 
