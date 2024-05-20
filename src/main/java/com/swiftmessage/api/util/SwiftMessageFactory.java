@@ -1,4 +1,4 @@
-package com.swiftmessage.api.entities.factory;
+package com.swiftmessage.api.util;
 
 import com.swiftmessage.api.entities.models.ReferenceAndMac;
 import com.swiftmessage.api.entities.models.Swift7xx;

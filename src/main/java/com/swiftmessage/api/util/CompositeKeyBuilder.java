@@ -1,16 +1,16 @@
-package com.swiftmessage.api.entities.builder;
+package com.swiftmessage.api.util;
 
 import com.swiftmessage.api.entities.models.ReferenceAndMac;
-import com.swiftmessage.api.exceptions.*;
+import com.swiftmessage.api.exceptions.builder.InvalidMessageIdentificationException;
 import com.swiftmessage.api.exceptions.messages.ExceptionMessage;
 
 import java.util.Objects;
 
-public class ReferenceAndMacBuilder {
+public class CompositeKeyBuilder {
 
     private ReferenceAndMac referenceAndMac;
 
-    public ReferenceAndMacBuilder(ReferenceAndMac referenceAndMac) {
+    public CompositeKeyBuilder(ReferenceAndMac referenceAndMac) {
         this.referenceAndMac = referenceAndMac;
     }
 
@@ -26,7 +26,7 @@ public class ReferenceAndMacBuilder {
         referenceAndMac.setMAC(reference);
     }
 
-    public ReferenceAndMac build() throws InvalidMessageIdentificationException{
+    public ReferenceAndMac build() throws InvalidMessageIdentificationException {
         if (isValid()) {
             return referenceAndMac;
         }
