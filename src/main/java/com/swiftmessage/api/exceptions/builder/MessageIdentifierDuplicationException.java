@@ -1,4 +1,4 @@
-package com.swiftmessage.api.exceptions;
+package com.swiftmessage.api.exceptions.builder;
 
 public class MessageIdentifierDuplicationException extends RuntimeException {
     public MessageIdentifierDuplicationException(String message) {
