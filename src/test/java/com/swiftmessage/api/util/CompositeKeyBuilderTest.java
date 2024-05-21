@@ -85,4 +85,10 @@ class CompositeKeyBuilderTest {
         boolean expected = false;
         assertEquals(expected, builder.isValid());
     }
+
+    @Test
+    @DisplayName("return Compositekey object")
+    void getSenderAndTransactionReferenceAndMacObject(){
+        assertEquals(new SenderAndTransactionReferenceAndMac(),builder.getCompositeKey(), "should return save object as builder");
+    }
 }
