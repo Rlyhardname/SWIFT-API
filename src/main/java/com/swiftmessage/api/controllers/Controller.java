@@ -28,24 +28,16 @@ public class Controller {
 
     }
 
-    @RequestMapping(value = "file/send",
+    @RequestMapping(path = "file/send/multipart",
             method = RequestMethod.POST
             , consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public void loadAndSaveFile(@RequestPart MultipartFile file) {
+    public void saveMultipartFileToRepo(@RequestPart MultipartFile file) {
         messageService.saveMessage(file);
     }
 
-    @PostMapping(path = "file/load")
-    public ResponseEntity<Swift7xxDto> loadRecord(@RequestParam String senderReference,
-                                                  @RequestParam String transactionReference) {
+    @PostMapping(path = "file/load/record")
+    public ResponseEntity<Swift7xxDto> loadMessageRecord(@RequestParam String senderReference,
+                                                         @RequestParam String transactionReference) {
         return ResponseEntity.of(Optional.of(messageService.loadRecord(senderReference, transactionReference)));
-    }
-
-    @PostMapping(path = "file-system/migrate")
-    public void saveFromRepoToFile(@RequestParam String senderReference,
-                                   @RequestParam String transactionReference,
-                                   @RequestParam String path,
-                                   @RequestParam String fileName) {
-        messageService.migrateMessageFromRepoToFileSystem(senderReference, transactionReference, path, fileName);
     }
 }
