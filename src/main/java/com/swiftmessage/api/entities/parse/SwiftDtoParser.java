@@ -2,6 +2,7 @@ package com.swiftmessage.api.entities.parse;
 
 import com.swiftmessage.api.entities.models.Swift7xx;
 
+// TODO probably bad design, think about it..
 public class SwiftDtoParser {
     public static String parseBasicHeader(Swift7xx swift7xx) {
         return "{" + swift7xx.getBasicHeader() + "}";

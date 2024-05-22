@@ -1,12 +1,12 @@
 package com.swiftmessage.api.io;
 
-import com.swiftmessage.api.entities.factory.SwiftMessageFactory;
-import com.swiftmessage.api.entities.models.ReferenceAndMac;
+import com.swiftmessage.api.state.MessageUtils;
+import com.swiftmessage.api.util.SwiftMessageFactory;
+import com.swiftmessage.api.entities.models.SenderAndTransactionReferenceAndMac;
 import com.swiftmessage.api.entities.models.Swift7xx;
-import com.swiftmessage.api.exceptions.InvalidMessageIdentificationException;
-import com.swiftmessage.api.exceptions.MessageIdentifierDuplicationException;
+import com.swiftmessage.api.exceptions.builder.InvalidMessageIdentificationException;
+import com.swiftmessage.api.exceptions.builder.MessageIdentifierDuplicationException;
 import com.swiftmessage.api.io.exceptions.MessageParserException;
-import com.swiftmessage.api.state.MessageState;
 import com.swiftmessage.api.util.MatcherGenerator;
 
 import java.util.regex.Matcher;
@@ -23,7 +23,7 @@ public class MessageParser implements Parser {
 
     @Override
     public Swift7xx parse(String[] lines) {
-        Matcher matcher = MatcherGenerator.generate(lines,SWIFT_PATTERN_799);
+        Matcher matcher = MatcherGenerator.generate(lines, SWIFT_PATTERN_799);
         runMatcher(matcher);
         return tryBuildSwiftMessage();
     }
@@ -34,7 +34,7 @@ public class MessageParser implements Parser {
             addDetails(line);
             appendMessage();
             includeToCompositeKeyBuilder(matcher, line);
-            if (MessageState.isState(line)) {
+            if (MessageUtils.isState(line)) {
                 details.getMessageState().changeState(line);
             }
 
@@ -60,12 +60,12 @@ public class MessageParser implements Parser {
     }
 
     private void includeToCompositeKeyBuilder(Matcher matcher, String line) {
-        if (MessageState.isReferenceState(line)) {
-            MessageState.buildReferenceState(details.getCompositeKeyBuilder(), line);
+        if (MessageUtils.isReferenceState(line)) {
+            MessageUtils.buildReferenceState(details.getCompositeKeyBuilder(), line);
         }
-        if (MessageState.isMacState(line)) {
+        if (MessageUtils.isMacState(line)) {
             String group2 = matcher.group(2);
-            MessageState.buildReferenceState(details.getCompositeKeyBuilder(), line, group2);
+            MessageUtils.buildReferenceState(details.getCompositeKeyBuilder(), line, group2);
         }
 
     }
@@ -99,7 +99,7 @@ public class MessageParser implements Parser {
     }
 
     private Swift7xx buildSwiftMessage() {
-        ReferenceAndMac compositeKey = details.getCompositeKeyBuilder().build();
+        SenderAndTransactionReferenceAndMac compositeKey = details.getCompositeKeyBuilder().build();
         return SwiftMessageFactory.instanceOf(compositeKey, details.getArrayOfLines());
     }
 

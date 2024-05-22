@@ -19,7 +19,7 @@ public class MatcherGenerator {
             //log(e);
             //alert system that pattern is corrupted and exit endpoint/use global exception handling for that maybe?
             // TODO change to global exception later
-            throw new RuntimeException(e);
+            throw new NullPointerException();
         }
 
     }

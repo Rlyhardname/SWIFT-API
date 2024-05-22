@@ -1,11 +1,8 @@
 package com.swiftmessage.api.io;
 
 import org.junit.jupiter.api.*;
+import org.mockito.Mockito;
 import org.springframework.web.multipart.MultipartFile;
-
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -26,7 +23,7 @@ class FileReaderTest {
     }
 
     @RepeatedTest(5)
-    void repeatTest(){
+    void repeatTest() {
 
     }
 
@@ -43,28 +40,29 @@ class FileReaderTest {
     }
 
     @Nested
-    class NestedClass{
+    class NestedClass {
 
         @Test
-        void test1(){
+        void test1() {
             assertAll(
-                    ()-> assertTrue(true, ()-> "if is true fails"),
-                    ()-> assertFalse(false, ()-> "if is false fails")
+                    () -> assertTrue(true, () -> "if is true fails"),
+                    () -> assertFalse(false, () -> "if is false fails")
             );
         }
 
-        void test2(){
+        void test2() {
 
         }
 
     }
 
     @Test
-    @DisplayName("Throw IOEXCEPTION.class")
+   // @Disabled
+    @DisplayName("Throw NullPointerException.class")
     void throwIOException() {
-        assertThrows(IOException.class, () -> {
-            multipartFileReader.read(Files.newInputStream(Path.of("D:/text.txt"))); {
-            }
+        MultipartFile actual = Mockito.mock(MultipartFile.class);
+        assertThrows(NullPointerException.class, () -> {
+            multipartFileReader.read(actual);
         });
     }
 

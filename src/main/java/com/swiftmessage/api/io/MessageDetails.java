@@ -1,7 +1,7 @@
 package com.swiftmessage.api.io;
 
-import com.swiftmessage.api.entities.builder.ReferenceAndMacBuilder;
-import com.swiftmessage.api.entities.models.ReferenceAndMac;
+import com.swiftmessage.api.util.CompositeKeyBuilder;
+import com.swiftmessage.api.entities.models.SenderAndTransactionReferenceAndMac;
 import com.swiftmessage.api.state.MessageState;
 
 import java.util.ArrayDeque;
@@ -11,14 +11,14 @@ class MessageDetails {
     private StringBuilder sb;
     private ArrayDeque<String> stackOfLines;
     private String[] arrayOfLines;
-    private ReferenceAndMacBuilder compositeKeyBuilder;
+    private CompositeKeyBuilder compositeKeyBuilder;
 
     public MessageDetails() {
         messageState = new MessageState(0);
         sb = new StringBuilder();
         stackOfLines = new ArrayDeque<>();
         arrayOfLines = new String[6];
-        compositeKeyBuilder = new ReferenceAndMacBuilder(new ReferenceAndMac());
+        compositeKeyBuilder = new CompositeKeyBuilder(new SenderAndTransactionReferenceAndMac());
     }
 
     public void setSb(StringBuilder sb) {
@@ -41,7 +41,7 @@ class MessageDetails {
         return arrayOfLines;
     }
 
-    public ReferenceAndMacBuilder getCompositeKeyBuilder() {
+    public CompositeKeyBuilder getCompositeKeyBuilder() {
         return compositeKeyBuilder;
     }
 }

@@ -12,7 +12,7 @@ public class Swift7xx implements SwiftMessage{
 //    @GeneratedValue(strategy = GenerationType.IDENTITY)
 //    private Long id;
     @EmbeddedId
-    private ReferenceAndMac referenceAndMac;
+    private SenderAndTransactionReferenceAndMac senderAndTransactionReferenceAndMac;
     @NotBlank
     @Column(name = "basic_header")
     private String basicHeader;
@@ -27,8 +27,8 @@ public class Swift7xx implements SwiftMessage{
     @Column(name = "trailer_block")
     private String trailerBlock;
 
-    public Swift7xx(ReferenceAndMac referenceAndMac, String basicHeader, String applicationHeader, String userHeader, String text, String trailerBlock) {
-        this.referenceAndMac = referenceAndMac;
+    public Swift7xx(SenderAndTransactionReferenceAndMac senderAndTransactionReferenceAndMac, String basicHeader, String applicationHeader, String userHeader, String text, String trailerBlock) {
+        this.senderAndTransactionReferenceAndMac = senderAndTransactionReferenceAndMac;
         this.basicHeader = basicHeader;
         this.applicationHeader = applicationHeader;
         this.userHeader = userHeader;
@@ -45,12 +45,12 @@ public class Swift7xx implements SwiftMessage{
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Swift7xx swift7xx = (Swift7xx) o;
-        return Objects.equals(referenceAndMac, swift7xx.referenceAndMac) && Objects.equals(basicHeader, swift7xx.basicHeader) && Objects.equals(applicationHeader, swift7xx.applicationHeader) && Objects.equals(userHeader, swift7xx.userHeader) && Objects.equals(text, swift7xx.text) && Objects.equals(trailerBlock, swift7xx.trailerBlock);
+        return Objects.equals(senderAndTransactionReferenceAndMac, swift7xx.senderAndTransactionReferenceAndMac) && Objects.equals(basicHeader, swift7xx.basicHeader) && Objects.equals(applicationHeader, swift7xx.applicationHeader) && Objects.equals(userHeader, swift7xx.userHeader) && Objects.equals(text, swift7xx.text) && Objects.equals(trailerBlock, swift7xx.trailerBlock);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(referenceAndMac, basicHeader, applicationHeader, userHeader, text, trailerBlock);
+        return Objects.hash(senderAndTransactionReferenceAndMac, basicHeader, applicationHeader, userHeader, text, trailerBlock);
     }
 
     @Override
@@ -84,7 +84,7 @@ public class Swift7xx implements SwiftMessage{
         return trailerBlock;
     }
 
-    public ReferenceAndMac getReferenceAndMac() {
-        return referenceAndMac;
+    public SenderAndTransactionReferenceAndMac getReferenceAndMac() {
+        return senderAndTransactionReferenceAndMac;
     }
 }

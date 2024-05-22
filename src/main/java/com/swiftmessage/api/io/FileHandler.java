@@ -1,8 +1,8 @@
 package com.swiftmessage.api.io;
 
 import com.swiftmessage.api.entities.models.Swift7xx;
-import com.swiftmessage.api.exceptions.InvalidMessageIdentificationException;
-import com.swiftmessage.api.exceptions.MessageIdentifierDuplicationException;
+import com.swiftmessage.api.exceptions.builder.InvalidMessageIdentificationException;
+import com.swiftmessage.api.exceptions.builder.MessageIdentifierDuplicationException;
 import com.swiftmessage.api.io.exceptions.EmptyMessageException;
 import com.swiftmessage.api.io.exceptions.MissingFileException;
 import org.springframework.web.multipart.MultipartFile;

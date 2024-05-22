@@ -1,6 +1,6 @@
 package com.swiftmessage.api.util;
 
-import com.swiftmessage.api.entities.models.ReferenceAndMac;
+import com.swiftmessage.api.entities.models.SenderAndTransactionReferenceAndMac;
 import com.swiftmessage.api.exceptions.builder.InvalidMessageIdentificationException;
 import com.swiftmessage.api.exceptions.messages.ExceptionMessage;
 
@@ -8,47 +8,47 @@ import java.util.Objects;
 
 public class CompositeKeyBuilder {
 
-    private ReferenceAndMac referenceAndMac;
+    private SenderAndTransactionReferenceAndMac senderAndTransactionReferenceAndMac;
 
-    public CompositeKeyBuilder(ReferenceAndMac referenceAndMac) {
-        this.referenceAndMac = referenceAndMac;
+    public CompositeKeyBuilder(SenderAndTransactionReferenceAndMac senderAndTransactionReferenceAndMac) {
+        this.senderAndTransactionReferenceAndMac = senderAndTransactionReferenceAndMac;
     }
 
     public void addSenderReference(String reference) {
-        referenceAndMac.setSenderReference(reference);
+        senderAndTransactionReferenceAndMac.setSenderReference(reference);
     }
 
     public void addTransactionReference(String reference) {
-        referenceAndMac.setTransactionReference(reference);
+        senderAndTransactionReferenceAndMac.setTransactionReference(reference);
     }
 
     public void addMacReference(String reference) {
-        referenceAndMac.setMAC(reference);
+        senderAndTransactionReferenceAndMac.setMAC(reference);
     }
 
-    public ReferenceAndMac build() throws InvalidMessageIdentificationException {
+    public SenderAndTransactionReferenceAndMac build() throws InvalidMessageIdentificationException {
         if (isValid()) {
-            return referenceAndMac;
+            return senderAndTransactionReferenceAndMac;
         }
 
         throw new InvalidMessageIdentificationException(ExceptionMessage.INVALID_ID);
     }
 
-    private boolean isValid() {
-        if (Objects.isNull(referenceAndMac.getSenderReference())) {
+    protected boolean isValid() {
+        if (Objects.isNull(senderAndTransactionReferenceAndMac.getSenderReference())) {
             return false;
         }
-        if (Objects.isNull(referenceAndMac.getTransactionReference())) {
+        if (Objects.isNull(senderAndTransactionReferenceAndMac.getTransactionReference())) {
             return false;
         }
-        if (Objects.isNull(referenceAndMac.getMAC())) {
+        if (Objects.isNull(senderAndTransactionReferenceAndMac.getMAC())) {
             return false;
         }
 
         return true;
     }
 
-    public ReferenceAndMac getCompositeKey() {
-        return referenceAndMac;
+    public SenderAndTransactionReferenceAndMac getCompositeKey() {
+        return senderAndTransactionReferenceAndMac;
     }
 }
